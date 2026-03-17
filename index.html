@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TranslateHub – Profesyonel Çeviri</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #273448;
+      --border: #334155;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #22c55e;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--text); }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    header {
+      text-align: center;
+      padding: 72px 20px 40px;
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    header h1 span {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+
+    /* TRANSLATOR CARD */
+    .translator-wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .lang-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 12px 20px;
+      gap: 12px;
+    }
+
+    .lang-select {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    select:focus { border-color: var(--primary); }
+
+    .swap-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .swap-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+
+    .panel {
+      position: relative;
+      background: var(--surface);
+    }
+    .panel:first-child { border-right: 1px solid var(--border); }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      line-height: 1.6;
+      padding: 20px;
+      resize: none;
+      outline: none;
+    }
+    textarea::placeholder { color: var(--text-muted); }
+
+    .panel-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .char-count { font-size: 0.78rem; color: var(--text-muted); }
+
+    .panel-actions { display: flex; gap: 8px; }
+
+    .icon-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .icon-btn:hover { background: var(--surface); border-color: var(--border); color: var(--text); }
+    .icon-btn.copied { color: var(--success); }
+
+    /* TRANSLATE BTN */
+    .translate-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 24px auto 0;
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .translate-btn:hover { background: var(--primary-hover); }
+    .translate-btn:active { transform: scale(0.98); }
+    .translate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Loading spinner inside btn */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* RESULT highlight */
+    .result-text {
+      color: #a5b4fc;
+    }
+
+    /* OUTPUT PANEL overlay for loading */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(30,41,59,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0;
+      display: none;
+    }
+    .loading-overlay.active { display: flex; }
+    .big-spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(99,102,241,0.3);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* FEATURES */
+    .features {
+      max-width: 980px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    .features h2 {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 36px;
+      font-weight: 600;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 28px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .panels { grid-template-columns: 1fr; }
+      .panel:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Translate<span>Hub</span></div>
+  <div class="nav-links">
+    <a href="#">Ana Sayfa</a>
+    <a href="#">Özellikler</a>
+    <a href="#">Hakkında</a>
+    <a href="#">İletişim</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header>
+  <h1>Anında <span>Profesyonel</span><br>İngilizce Çeviri</h1>
+  <p>Metinlerinizi saniyeler içinde doğal ve akıcı İngilizceye çevirin. Ücretsiz, hızlı ve güvenilir.</p>
+</header>
+
+<!-- TRANSLATOR -->
+<div class="translator-wrapper">
+  <div class="lang-bar">
+    <div class="lang-select">
+      <span class="lang-label">Kaynak</span>
+      <select id="sourceLang">
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="de">🇩🇪 Almanca</option>
+        <option value="fr">🇫🇷 Fransızca</option>
+        <option value="es">🇪🇸 İspanyolca</option>
+        <option value="it">🇮🇹 İtalyanca</option>
+        <option value="ru">🇷🇺 Rusça</option>
+        <option value="ja">🇯🇵 Japonca</option>
+        <option value="zh">🇨🇳 Çince</option>
+        <option value="ar">🇸🇦 Arapça</option>
+      </select>
+    </div>
+
+    <button class="swap-btn" id="swapBtn" title="Dilleri Değiştir">⇄</button>
+
+    <div class="lang-select">
+      <span class="lang-label">Hedef</span>
+      <select id="targetLang">
+        <option value="en">🇬🇧 İngilizce</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="de">🇩🇪 Almanca</option>
+        <option value="fr">🇫🇷 Fransızca</option>
+        <option value="es">🇪🇸 İspanyolca</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="panels">
+    <!-- INPUT -->
+    <div class="panel">
+      <textarea id="inputText" placeholder="Çevirmek istediğiniz metni buraya yazın…" maxlength="5000"></textarea>
+      <div class="panel-footer">
+        <span class="char-count"><span id="charCount">0</span> / 5000</span>
+        <div class="panel-actions">
+          <button class="icon-btn" id="clearBtn" title="Temizle">🗑</button>
+          <button class="icon-btn" id="speakSourceBtn" title="Seslendir">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="panel">
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="big-spinner"></div>
+      </div>
+      <textarea id="outputText" class="result-text" placeholder="Çeviri burada görünecek…" readonly></textarea>
+      <div class="panel-footer">
+        <span class="char-count" id="outCharCount"></span>
+        <div class="panel-actions">
+          <button class="icon-btn" id="copyBtn" title="Kopyala">📋</button>
+          <button class="icon-btn" id="speakTargetBtn" title="Seslendir">🔊</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="translate-btn" id="translateBtn">Çevir</button>
+</div>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2>Neden TranslateHub?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Anında Çeviri</h3>
+      <p>Gelişmiş algoritmalar sayesinde metinleriniz saniyeler içinde çevrilir.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Yüksek Doğruluk</h3>
+      <p>Bağlamı anlayan yapısıyla doğal ve akıcı çeviriler sunar.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔊</div>
+      <h3>Sesli Okuma</h3>
+      <p>Hem kaynak hem hedef metni sesli olarak dinleyebilirsiniz.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Çoklu Dil</h3>
+      <p>Türkçe başta olmak üzere onlarca dilden İngilizceye çeviri.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 TranslateHub &mdash; Tüm hakları saklıdır.
+</footer>
+
+<script>
+  const inputText    = document.getElementById('inputText');
+  const outputText   = document.getElementById('outputText');
+  const translateBtn = document.getElementById('translateBtn');
+  const clearBtn     = document.getElementById('clearBtn');
+  const copyBtn      = document.getElementById('copyBtn');
+  const speakSrcBtn  = document.getElementById('speakSourceBtn');
+  const speakTgtBtn  = document.getElementById('speakTargetBtn');
+  const charCountEl  = document.getElementById('charCount');
+  const outCharCount = document.getElementById('outCharCount');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const sourceLang   = document.getElementById('sourceLang');
+  const targetLang   = document.getElementById('targetLang');
+  const swapBtn      = document.getElementById('swapBtn');
+
+  // Char counter
+  inputText.addEventListener('input', () => {
+    charCountEl.textContent = inputText.value.length;
+  });
+
+  // Clear
+  clearBtn.addEventListener('click', () => {
+    inputText.value = '';
+    outputText.value = '';
+    charCountEl.textContent = '0';
+    outCharCount.textContent = '';
+  });
+
+  // Copy
+  copyBtn.addEventListener('click', () => {
+    if (!outputText.value) return;
+    navigator.clipboard.writeText(outputText.value).then(() => {
+      copyBtn.textContent = '✅';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = '📋'; copyBtn.classList.remove('copied'); }, 1500);
+    });
+  });
+
+  // Swap languages
+  swapBtn.addEventListener('click', () => {
+    const tmp = sourceLang.value;
+    sourceLang.value = targetLang.value;
+    // Only swap if target has the source option
+    if ([...targetLang.options].some(o => o.value === tmp)) {
+      targetLang.value = tmp;
+    }
+    // Also swap text
+    const tmpText = inputText.value;
+    inputText.value = outputText.value;
+    outputText.value = tmpText;
+    charCountEl.textContent = inputText.value.length;
+    outCharCount.textContent = outputText.value ? outputText.value.length + ' karakter' : '';
+  });
+
+  // Text-to-Speech
+  function speak(text, lang) {
+    if (!text || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = lang;
+    window.speechSynthesis.speak(utt);
+  }
+
+  speakSrcBtn.addEventListener('click', () => speak(inputText.value, sourceLang.value));
+  speakTgtBtn.addEventListener('click', () => speak(outputText.value, targetLang.value));
+
+  // --- TRANSLATE using MyMemory API (free, no key needed) ---
+  translateBtn.addEventListener('click', async () => {
+    const text = inputText.value.trim();
+    if (!text) return;
+
+    const src = sourceLang.value;
+    const tgt = targetLang.value;
+    if (src === tgt) {
+      outputText.value = text;
+      return;
+    }
+
+    // UI state
+    translateBtn.disabled = true;
+    translateBtn.innerHTML = '<span class="spinner"></span>Çevriliyor…';
+    loadingOverlay.classList.add('active');
+    outputText.value = '';
+    outCharCount.textContent = '';
+
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${src}|${tgt}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.responseStatus === 200) {
+        const translated = data.responseData.translatedText;
+        outputText.value = translated;
+        outCharCount.textContent = translated.length + ' karakter';
+      } else {
+        outputText.value = '⚠️ Çeviri yapılamadı. Lütfen tekrar deneyin.';
+      }
+    } catch (err) {
+      outputText.value = '⚠️ Bağlantı hatası. İnternet bağlantınızı kontrol edin.';
+    } finally {
+      translateBtn.disabled = false;
+      translateBtn.textContent = 'Çevir';
+      loadingOverlay.classList.remove('active');
+    }
+  });
+
+  // Allow Ctrl+Enter to translate
+  inputText.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') translateBtn.click();
+  });
+</script>
+</body>
+</html>
