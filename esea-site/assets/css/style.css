@@ -429,6 +429,49 @@ button { font: inherit; }
 .mobile-bar { display: none; }
 
 /* ---------- duyarlı ---------- */
+.svc-link { display: inline-flex; gap: 6px; margin-top: 14px; font: 700 .82rem/1 var(--ff-head); letter-spacing: .04em; color: var(--white); border-bottom: 1px solid var(--accent-lt); padding-bottom: 4px; }
+.svc-link:hover { color: var(--accent-lt); }
+.svc:focus-within .svc-more { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+.region li a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.region li a:hover { color: var(--blue); }
+/* ---- Hizmet sayfaları (Filyos, Boğaz Geçişleri) ---- */
+.sp-intro-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+.sp-copy h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); margin: 0; }
+.sp-bar { margin: 20px 0 22px; }
+.sp-copy p:not(.kicker) { color: var(--text); margin: 0 0 16px; }
+.sp-media { margin: 0; box-shadow: var(--shadow-lg); }
+.sp-media img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.sp-steps-sec { background: var(--paper); }
+.sp-steps { list-style: none; margin: 0 auto; padding: 0; max-width: 900px; display: grid; gap: 14px; counter-reset: none; }
+.sp-step { display: flex; gap: 22px; align-items: flex-start; background: var(--white); padding: 24px 28px; box-shadow: 0 10px 30px rgb(6 24 43 / 6%); }
+.sp-num { flex-shrink: 0; font: 800 1.6rem/1 var(--ff-head); color: var(--accent); min-width: 44px; }
+.sp-step h3 { font-size: 1.1rem; margin: 2px 0 6px; color: var(--navy-950); }
+.sp-step p { margin: 0; font-size: .95rem; color: var(--text); }
+.sp-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.sp-card { background: var(--white); padding: 28px 28px 30px; border-top: 3px solid var(--accent); box-shadow: 0 10px 30px rgb(6 24 43 / 7%); }
+.sp-card h3 { font-size: 1.12rem; color: var(--blue); margin: 0 0 10px; }
+.sp-card p { margin: 0; font-size: .94rem; color: var(--text); }
+.sp-svc-sec { background: var(--paper); }
+.sp-steps-sec + .sp-svc-sec { background: var(--white); }
+.sp-steps-sec + .sp-svc-sec .sp-card { background: var(--paper); box-shadow: none; }
+.sp-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.sp-why-grid h2 { font-size: clamp(1.45rem, 1.15rem + 1vw, 2rem); margin: 0 0 22px; }
+.sp-why { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 14px; }
+.sp-why li { display: flex; gap: 12px; align-items: flex-start; }
+.sp-why svg { flex-shrink: 0; width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: var(--accent); color: var(--white); margin-top: 2px; }
+.sp-related { font-weight: 600; margin: 0; }
+.sp-related a { display: inline-flex; align-items: center; gap: 8px; color: var(--blue); }
+.sp-related .arr { width: 18px; height: 18px; }
+.sp-faq { display: grid; gap: 10px; }
+.sp-faq-item { background: var(--paper); padding: 0 22px; }
+.sp-faq-item summary { cursor: pointer; list-style: none; padding: 18px 28px 18px 0; position: relative; font: 700 1rem/1.4 var(--ff-head); color: var(--navy-950); }
+.sp-faq-item summary::-webkit-details-marker { display: none; }
+.sp-faq-item summary::after { content: "+"; position: absolute; right: 0; top: 14px; font: 400 1.5rem/1 var(--ff-head); color: var(--accent-dk); transition: transform .25s; }
+.sp-faq-item[open] summary::after { transform: rotate(45deg); }
+.sp-faq-item p { margin: 0 0 18px; font-size: .95rem; color: var(--text); }
+.sp-faq-item summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (max-width: 1000px) { .sp-intro-grid, .sp-why-grid { grid-template-columns: 1fr; } .sp-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .sp-cards { grid-template-columns: 1fr; } .sp-step { padding: 20px; gap: 16px; } .sp-num { min-width: 34px; font-size: 1.3rem; } }
 /* 7 menü bağlantısı: orta genişliklerde sıkılaştır, dar masaüstünde üst butonu gizle (hero ve iletişimde zaten var) */
 @media (min-width: 1025px) and (max-width: 1440px) {
   .main-nav ul { gap: clamp(12px, 1.3vw, 22px); }
