@@ -14,8 +14,8 @@ export const ICON = {
 };
 
 const T = {
-  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç" },
-  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps" },
+  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç", office: "Sabit Hat" },
+  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps", office: "Office Phone" },
 };
 
 const initials = (name) => name.split(/\s+/).filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toLocaleUpperCase("tr");
@@ -77,6 +77,7 @@ export function renderContact(data, lang) {
   const addr = hq[`adres_${lang}`] || hq.adres_tr;
   return [
     addr && `<li>${ICON.pin}<div><small>${t.address}</small><span>${esc(addr)}</span>${hq.harita ? `<a href="${esc(hq.harita)}" target="_blank" rel="noopener">${t.map} →</a>` : ""}</div></li>`,
+    hq.telefon && hq.telefon !== f.operasyon_telefon_7_24 && `<li>${ICON.phone}<div><small>${t.office}</small><a href="tel:${tel(hq.telefon)}">${esc(hq.telefon)}</a></div></li>`,
     f.eposta && `<li>${ICON.mail}<div><small>${t.email}</small><a href="mailto:${esc(f.eposta)}">${esc(f.eposta)}</a></div></li>`,
     f.operasyon_eposta && `<li>${ICON.mail}<div><small>${t.opsMail}</small><a href="mailto:${esc(f.operasyon_eposta)}">${esc(f.operasyon_eposta)}</a></div></li>`,
     f.operasyon_telefon_7_24 && `<li class="ci-ops">${ICON.clock}<div><small>${t.ops}</small><a href="tel:${tel(f.operasyon_telefon_7_24)}">${esc(f.operasyon_telefon_7_24)}</a></div></li>`,
