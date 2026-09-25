@@ -4,8 +4,13 @@
 
 declare(strict_types=1);
 
+date_default_timezone_set('Europe/Istanbul');
+
 const ALICI = 'agency@eseaagency.com';
-const GONDEREN = 'agency@eseaagency.com'; // alan adına ait gerçek bir hesap olmalı (SPF uyumu)
+const GONDEREN = 'agency@eseaagency.com'; // SMTP ile oturum açılan hesap
+// SMTP şifresi web'den erişilemeyen üst klasörde durur (public_html'in bir üstü), depoya girmez.
+const AYAR_DOSYASI = __DIR__ . '/../iletisim-ayar.php';
+const HATA_DOSYASI = __DIR__ . '/../iletisim-hata.log';
 
 $json = strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
 $lang = ($_POST['lang'] ?? 'tr') === 'en' ? 'en' : 'tr';
@@ -81,7 +86,7 @@ $satirlar = [
 $govde = '';
 foreach ($satirlar as $k => $v) {
     if ($v !== '') {
-        $govde .= str_pad($k . ':', 17) . $v . "\n";
+        $govde .= $k . ':' . str_repeat(' ', max(1, 16 - mb_strlen($k))) . $v . "\n";
     }
 }
 $govde .= "\nMesaj:\n" . $mesaj . "\n\n--\n"
@@ -91,16 +96,89 @@ $govde .= "\nMesaj:\n" . $mesaj . "\n\n--\n"
 $konuMetni = 'Web formu: ' . ($gemi !== '' ? $gemi . ' – ' : '') . ($liman !== '' ? $liman . ' – ' : '') . $ad;
 $konu = '=?UTF-8?B?' . base64_encode($konuMetni) . '?=';
 
-$basliklar = implode("\r\n", [
-    'From: ESEA Agency Web <' . GONDEREN . '>',
+$basliklar = [
+    'Date: ' . date('r'),
+    'From: =?UTF-8?B?' . base64_encode('ESEA Agency Web') . '?= <' . GONDEREN . '>',
+    'To: <' . ALICI . '>',
     'Reply-To: ' . $eposta,
+    'Subject: ' . $konu,
+    'Message-ID: <' . bin2hex(random_bytes(12)) . '@eseaagency.com>',
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-]);
+    'Content-Transfer-Encoding: base64',
+];
+$ileti = implode("\r\n", $basliklar) . "\r\n\r\n" . chunk_split(base64_encode($govde));
 
-$ok = mail(ALICI, $konu, $govde, $basliklar, '-f' . GONDEREN);
-if ($ok) {
+try {
+    $ayar = is_file(AYAR_DOSYASI) ? require AYAR_DOSYASI : null;
+    if (!is_array($ayar)) {
+        throw new RuntimeException('SMTP ayar dosyası bulunamadı: ' . AYAR_DOSYASI);
+    }
+    smtpGonder($ayar, GONDEREN, ALICI, $ileti);
     @touch($ipDosya);
+    bitir(true);
+} catch (Throwable $e) {
+    @file_put_contents(HATA_DOSYASI, date('c') . ' ' . $e->getMessage() . "\n", FILE_APPEND);
+    bitir(false, 'mail_failed');
 }
-bitir($ok, $ok ? '' : 'mail_failed');
+
+/**
+ * Kimlik doğrulamalı SMTP ile tek bir ileti gönderir (PHP mail() Natro'da kapalı).
+ * $ayar: host, port, guvenlik ('ssl' = 465, 'tls' = 587 STARTTLS), kullanici, sifre
+ */
+function smtpGonder(array $ayar, string $kimden, string $kime, string $ileti): void
+{
+    $guvenlik = $ayar['guvenlik'] ?? 'ssl';
+    $port = (int)($ayar['port'] ?? ($guvenlik === 'ssl' ? 465 : 587));
+    $ctx = stream_context_create(['ssl' => [
+        'verify_peer' => $ayar['sertifika_dogrula'] ?? true,
+        'verify_peer_name' => $ayar['sertifika_dogrula'] ?? true,
+        'SNI_enabled' => true,
+    ]]);
+    $adres = ($guvenlik === 'ssl' ? 'ssl://' : 'tcp://') . $ayar['host'] . ':' . $port;
+    $s = @stream_socket_client($adres, $no, $hata, 15, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$s) {
+        throw new RuntimeException("Bağlantı kurulamadı ($adres): $hata");
+    }
+    stream_set_timeout($s, 15);
+    $oku = static function () use ($s): string {
+        $yanit = '';
+        while (($satir = fgets($s, 1024)) !== false) {
+            $yanit .= $satir;
+            if (strlen($satir) < 4 || $satir[3] === ' ') {
+                break;
+            }
+        }
+        return $yanit;
+    };
+    $komut = static function (?string $c, int $beklenen) use ($s, $oku): string {
+        if ($c !== null) {
+            fwrite($s, $c . "\r\n");
+        }
+        $y = $oku();
+        if ((int)substr($y, 0, 3) !== $beklenen) {
+            $goster = ($c !== null && stripos($c, 'AUTH') === false && strlen($c) < 80) ? $c : '(komut)';
+            throw new RuntimeException("SMTP beklenmeyen yanıt [$goster]: " . trim($y));
+        }
+        return $y;
+    };
+    $komut(null, 220);
+    $komut('EHLO eseaagency.com', 250);
+    if ($guvenlik === 'tls') {
+        $komut('STARTTLS', 220);
+        if (!stream_socket_enable_crypto($s, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT)) {
+            throw new RuntimeException('STARTTLS başarısız');
+        }
+        $komut('EHLO eseaagency.com', 250);
+    }
+    $komut('AUTH LOGIN', 334);
+    $komut(base64_encode($ayar['kullanici']), 334);
+    $komut(base64_encode($ayar['sifre']), 235);
+    $komut('MAIL FROM:<' . $kimden . '>', 250);
+    $komut('RCPT TO:<' . $kime . '>', 250);
+    $komut('DATA', 354);
+    // Nokta ile başlayan satırlar SMTP'de ikiye katlanır (base64 gövdede zaten olmaz).
+    $komut(preg_replace('/^\./m', '..', $ileti) . "\r\n.", 250);
+    fwrite($s, "QUIT\r\n");
+    fclose($s);
+}
