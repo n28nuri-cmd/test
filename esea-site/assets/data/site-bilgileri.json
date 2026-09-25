@@ -1,0 +1,139 @@
+{
+  "_aciklama": "cPanel > Dosya Yöneticisi'nden düzenleyebilirsiniz. Boş (\"\") alanlar sitede otomatik gizlenir. 'foto' alanına assets/img/ekip/ klasöründeki dosya adını yazın. 'tanitim_tr' / 'tanitim_en' ekip sayfasındaki kısa tanıtım cümlesidir. 'yer_tutucu': true olan kadrolar sitede GÖSTERİLMEZ; gerçek bilgileri girip bu alanı silince görünür. Ekip telefon/e-postaları GEÇİCİ örnek değerlerdir. Ofislerde 'goster': false olanlar sitede gösterilmez.",
+  "firma": {
+    "unvan": "ESEA Agency",
+    "operasyon_telefon_7_24": "+90 530 774 49 27",
+    "eposta": "info@eseaagency.com",
+    "operasyon_eposta": "ops@eseaagency.com",
+    "linkedin": ""
+  },
+  "ofisler": [
+    {
+      "kod": "istanbul",
+      "ad_tr": "İstanbul Merkez Ofis",
+      "ad_en": "Istanbul Head Office",
+      "adres_tr": "Kavacık Mah. Özkan Sokak No:3 Daire:2, Çelik İş Merkezi, Beykoz / İstanbul",
+      "adres_en": "Kavacık Mah. Özkan Sok. No:3 D:2, Çelik İş Merkezi, Beykoz, Istanbul, Türkiye",
+      "telefon": "+90 530 774 49 27",
+      "eposta": "info@eseaagency.com",
+      "harita": "https://www.google.com/maps/search/?api=1&query=%C3%87elik+%C4%B0%C5%9F+Merkezi+Kavac%C4%B1k+Beykoz+%C4%B0stanbul"
+    },
+    {
+      "kod": "filyos",
+      "goster": false,
+      "ad_tr": "Filyos Operasyon Ofisi",
+      "ad_en": "Filyos Operations Office",
+      "adres_tr": "Filyos Limanı, Çaycuma / Zonguldak",
+      "adres_en": "Filyos Port, Çaycuma, Zonguldak, Türkiye",
+      "telefon": "",
+      "eposta": "ops@eseaagency.com",
+      "harita": ""
+    }
+  ],
+  "ekip": [
+    {
+      "ad": "Erhan Erdebil",
+      "unvan_tr": "Genel Müdür",
+      "unvan_en": "General Manager",
+      "telefon": "+90 500 000 00 01",
+      "eposta": "erhan.erdebil@eseaagency.com",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "Şirketin stratejik yönetiminden ve iş geliştirme faaliyetlerinden sorumludur.",
+      "tanitim_en": "Responsible for the company's strategic management and business development."
+    },
+    {
+      "ad": "Cengizhan Genç",
+      "unvan_tr": "Acente Müdürü",
+      "unvan_en": "Agency Manager",
+      "telefon": "+90 500 000 00 02",
+      "eposta": "cengizhan.genc@eseaagency.com",
+      "linkedin": "",
+      "foto": "cengizhan-genc.webp",
+      "tanitim_tr": "Liman uğrakları ve boğaz geçişlerinin planlama ve koordinasyonundan sorumludur.",
+      "tanitim_en": "Responsible for the planning and coordination of port calls and strait transits."
+    },
+    {
+      "ad": "Nurettin Öztepe",
+      "unvan_tr": "Filyos Operasyon Müdürü",
+      "unvan_en": "Filyos Operations Manager",
+      "telefon": "+90 500 000 00 03",
+      "eposta": "nurettin.oztepe@eseaagency.com",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "Sondaj gemileri ve offshore destek filolarına yönelik saha operasyonlarını yönetir.",
+      "tanitim_en": "Leads field operations for drillships and offshore support fleets."
+    },
+    {
+      "ad": "Ferhat Soylu",
+      "unvan_tr": "Acente Personeli",
+      "unvan_en": "Agency Officer",
+      "telefon": "+90 500 000 00 04",
+      "eposta": "ferhat.soylu@eseaagency.com",
+      "linkedin": "",
+      "foto": "ferhat-soylu.webp",
+      "tanitim_tr": "Liman uğraklarında operasyon ve dokümantasyon süreçlerinin takibinden sorumludur.",
+      "tanitim_en": "Responsible for operations and documentation throughout port calls."
+    },
+    {
+      "yer_tutucu": true,
+      "ad": "Ekip Üyesi",
+      "unvan_tr": "Operasyon Sorumlusu",
+      "unvan_en": "Operations Supervisor",
+      "telefon": "",
+      "eposta": "",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "",
+      "tanitim_en": ""
+    },
+    {
+      "yer_tutucu": true,
+      "ad": "Ekip Üyesi",
+      "unvan_tr": "Boarding Agent",
+      "unvan_en": "Boarding Agent",
+      "telefon": "",
+      "eposta": "",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "",
+      "tanitim_en": ""
+    },
+    {
+      "yer_tutucu": true,
+      "ad": "Ekip Üyesi",
+      "unvan_tr": "Mürettebat Değişimi Koordinatörü",
+      "unvan_en": "Crew Change Coordinator",
+      "telefon": "",
+      "eposta": "",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "",
+      "tanitim_en": ""
+    },
+    {
+      "yer_tutucu": true,
+      "ad": "Ekip Üyesi",
+      "unvan_tr": "Lojistik Koordinatörü",
+      "unvan_en": "Logistics Coordinator",
+      "telefon": "",
+      "eposta": "",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "",
+      "tanitim_en": ""
+    },
+    {
+      "yer_tutucu": true,
+      "ad": "Ekip Üyesi",
+      "unvan_tr": "Gümrük & Dokümantasyon Uzmanı",
+      "unvan_en": "Customs & Documentation Specialist",
+      "telefon": "",
+      "eposta": "",
+      "linkedin": "",
+      "foto": "",
+      "tanitim_tr": "",
+      "tanitim_en": ""
+    }
+  ]
+}
