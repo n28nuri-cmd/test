@@ -93,6 +93,8 @@ button { font: inherit; }
 .brand { width: 230px; flex-shrink: 0; transition: width .3s var(--ease); }
 .scrolled .brand { width: 200px; }
 .brand svg { width: 100%; height: auto; }
+/* koyu menüde marka mavisi okunurluk için biraz açılır */
+.site-header .brand svg [fill="#3B7BC0"] { fill: #5C9BE0; }
 .main-nav { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-left: clamp(24px, 4vw, 56px); }
 .main-nav ul { display: flex; gap: clamp(18px, 2.2vw, 34px); margin-inline: auto; }
 .main-nav ul a { color: rgb(255 255 255 / 88%); font: 600 .8rem/1 var(--ff-head); letter-spacing: .12em; text-transform: uppercase; padding: 10px 0; position: relative; white-space: nowrap; }
@@ -123,6 +125,14 @@ button { font: inherit; }
 .slide-cap .kicker { display: flex; align-items: center; gap: 14px; font-size: .72rem; letter-spacing: .26em; color: var(--white); margin-bottom: 16px; }
 .slide-cap .kicker::before { content: ""; width: 34px; height: 1.5px; background: var(--accent-lt); flex-shrink: 0; }
 .slide-text { font: 400 clamp(1.02rem, .92rem + .45vw, 1.28rem)/1.65 var(--ff-body); color: rgb(255 255 255 / 92%); margin: 0; text-shadow: 0 1px 12px rgb(0 0 0 / 35%); }
+.slide-title { font: 800 clamp(2rem, 1.3rem + 2.6vw, 3.4rem)/1.08 var(--ff-head); letter-spacing: -.02em; color: var(--white); margin: 0 0 18px; text-shadow: 0 2px 18px rgb(0 0 0 / 35%); }
+.slide-cap > .slide-title { max-width: 760px; }
+.slide-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.slide-cta .btn { min-height: 48px; }
+.btn-ghost { background: rgb(6 24 43 / 35%); color: var(--white); border-color: rgb(255 255 255 / 55%); backdrop-filter: blur(6px); }
+.btn-ghost:hover { background: var(--white); color: var(--navy-950); }
+.slide.is-active .slide-cap > *:nth-child(3) { animation-delay: .3s; }
+.slide.is-active .slide-cap > *:nth-child(4) { animation-delay: .42s; }
 .slide-list { display: grid; gap: 10px; }
 .slide-list li { display: flex; align-items: center; gap: 12px; font: 400 clamp(1rem, .92rem + .4vw, 1.22rem)/1.4 var(--ff-body); color: rgb(255 255 255 / 92%); }
 .slide-list svg { width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: var(--accent); color: var(--white); flex-shrink: 0; }
@@ -427,10 +437,10 @@ button { font: inherit; }
   .about, .contact-grid { grid-template-columns: 1fr; }
   .off-grid, .cred-grid { grid-template-columns: 1fr 1fr; }
   .svc-grid { grid-template-columns: 1fr 1fr; }
-  .line, .line.rev { grid-template-columns: 1fr; }
+  .line, .line.rev { grid-template-columns: minmax(0, 1fr); }
   .line.rev .line-img { order: 0; }
   .line-img { min-height: 300px; }
-  .line-title, .line.rev .line-title { margin: -60px 0 20px; align-self: flex-start; text-align: left; }
+  .line-title, .line.rev .line-title { margin: -60px 0 20px; align-self: flex-start; text-align: left; width: auto; max-width: 100%; overflow-wrap: break-word; }
   .line.rev .line-copy { text-align: left; align-items: flex-start; }
   .line-copy p { max-width: none; }
   .pd { grid-template-columns: 1fr; }
@@ -440,8 +450,9 @@ button { font: inherit; }
   body { font-size: 16px; padding-bottom: 64px; }
   .container, .container.narrow { width: calc(100% - 32px); }
   .brand, .scrolled .brand { width: 160px; }
-  .hero-slider { min-height: 620px; }
+  .hero-slider { height: calc(100svh - 64px); min-height: 600px; }
   .slider-ui { bottom: 26px; }
+  .slide-cta { display: none; } /* alttaki mobil çubuk aynı butonları sunar */
   .svc-grid { grid-template-columns: 1fr; gap: 14px; }
   .svc { min-height: 420px; }
   .exp-grid, .pr-grid, .regions, .off-grid, .cred-grid, .team-sec .pp-grid, .pp-grid, .contact-form { grid-template-columns: 1fr; }

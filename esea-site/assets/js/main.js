@@ -1,4 +1,4 @@
-import { renderPeople, renderContact } from "./render.js?v=mufi0p9c";
+import { renderPeople, renderContact } from "./render.js?v=esea0925";
 
 const doc = document.documentElement;
 doc.classList.add("js");
@@ -100,7 +100,7 @@ if (document.querySelector("[data-people], [data-contact]")) {
     .then((r) => (r.ok ? r.json() : Promise.reject()))
     .then((data) => {
       document.querySelectorAll("[data-people]").forEach((el) => {
-        el.innerHTML = renderPeople(data, lang, base, el.dataset.heading || "h3");
+        el.innerHTML = renderPeople(data, lang, base, el.dataset.heading || "h3", Number(el.dataset.limit) || 0);
         el.querySelectorAll(".reveal").forEach((r) => r.classList.add("in"));
         bindPeople(el);
       });

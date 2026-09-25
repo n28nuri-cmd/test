@@ -26,14 +26,15 @@ export const people = (data) => (data.ekip || []).filter((m) => !m.yer_tutucu);
 function photo(m, lang, base, cls = "") {
   return m.foto
     ? `<img class="${cls}" src="${base}assets/img/ekip/${esc(m.foto)}" alt="${esc(m.ad)} – ${esc(title(m, lang))}" loading="lazy" decoding="async" width="720" height="900">`
-    : `<div class="ph ${cls}" aria-hidden="true"><span>${esc(initials(m.ad))}</span><small>${T[lang].soon}</small></div>`;
+    : `<div class="ph ${cls}" aria-hidden="true"><span>${esc(initials(m.ad))}</span></div>`;
 }
 
 // Zeymarine tarzı kişi kartı: dikey portre · isim · unvan · yuvarlak ikonlar · kısa tanıtım · "Detaylar"
 // Detay içeriği <template> içinde durur; main.js ortak pencerede gösterir.
-export function renderPeople(data, lang, base = "", headingTag = "h3") {
+export function renderPeople(data, lang, base = "", headingTag = "h3", limit = 0) {
   const t = T[lang];
-  return people(data).map((m, i) => {
+  const list = people(data);
+  return (limit > 0 ? list.slice(0, limit) : list).map((m, i) => {
     const icons = [
       m.eposta && `<a href="mailto:${esc(m.eposta)}" aria-label="${t.mail}: ${esc(m.ad)}" title="${esc(m.eposta)}">${ICON.mail}</a>`,
       m.telefon && `<a href="tel:${tel(m.telefon)}" aria-label="${t.call}: ${esc(m.ad)}" title="${esc(m.telefon)}">${ICON.phone}</a>`,
