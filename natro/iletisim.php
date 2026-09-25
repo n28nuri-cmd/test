@@ -151,13 +151,14 @@ function smtpGonder(array $ayar, string $kimden, string $kime, string $ileti): v
         }
         return $yanit;
     };
-    $komut = static function (?string $c, int $beklenen) use ($s, $oku): string {
+    // $etiket: hata kaydına yazılacak ad. Kullanıcı adı/şifre satırları asla kayda geçmez.
+    $komut = static function (?string $c, int $beklenen, ?string $etiket = null) use ($s, $oku): string {
         if ($c !== null) {
             fwrite($s, $c . "\r\n");
         }
         $y = $oku();
         if ((int)substr($y, 0, 3) !== $beklenen) {
-            $goster = ($c !== null && stripos($c, 'AUTH') === false && strlen($c) < 80) ? $c : '(komut)';
+            $goster = $etiket ?? ($c === null ? 'bağlantı' : (strlen($c) < 80 ? $c : 'DATA'));
             throw new RuntimeException("SMTP beklenmeyen yanıt [$goster]: " . trim($y));
         }
         return $y;
@@ -172,13 +173,13 @@ function smtpGonder(array $ayar, string $kimden, string $kime, string $ileti): v
         $komut('EHLO eseaagency.com', 250);
     }
     $komut('AUTH LOGIN', 334);
-    $komut(base64_encode($ayar['kullanici']), 334);
-    $komut(base64_encode($ayar['sifre']), 235);
+    $komut(base64_encode($ayar['kullanici']), 334, 'kullanıcı adı');
+    $komut(base64_encode($ayar['sifre']), 235, 'şifre');
     $komut('MAIL FROM:<' . $kimden . '>', 250);
     $komut('RCPT TO:<' . $kime . '>', 250);
     $komut('DATA', 354);
     // Nokta ile başlayan satırlar SMTP'de ikiye katlanır (base64 gövdede zaten olmaz).
-    $komut(preg_replace('/^\./m', '..', $ileti) . "\r\n.", 250);
+    $komut(preg_replace('/^\./m', '..', $ileti) . "\r\n.", 250, 'DATA');
     fwrite($s, "QUIT\r\n");
     fclose($s);
 }
