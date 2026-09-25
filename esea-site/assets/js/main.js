@@ -1,4 +1,4 @@
-import { renderPeople, renderContact } from "./render.js?v=esea0925f";
+import { renderPeople, renderContact } from "./render.js?v=esea0925h";
 
 const doc = document.documentElement;
 doc.classList.add("js");
