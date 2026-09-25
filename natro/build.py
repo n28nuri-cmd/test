@@ -8,6 +8,7 @@ Kullanım:  python3 natro/build.py [çıktı.zip]
 import re
 import shutil
 import sys
+import time
 import zipfile
 from pathlib import Path
 
@@ -25,6 +26,14 @@ refs = "".join(
 )
 UNUSED = {f.relative_to(SRC).as_posix() for f in (SRC / "assets/img").rglob("*") if f.is_file() and f.name not in refs}
 
+def info(name: str) -> zipfile.ZipInfo:
+    """Metinden yazılan dosyalar da web sunucusunun okuyabileceği 0644 izniyle çıkarılsın."""
+    zi = zipfile.ZipInfo(name, date_time=time.localtime()[:6])
+    zi.external_attr = 0o100644 << 16
+    zi.compress_type = zipfile.ZIP_DEFLATED
+    return zi
+
+
 with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
     for f in sorted(SRC.rglob("*")):
         rel = f.relative_to(SRC).as_posix()
@@ -35,9 +44,9 @@ with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
             if rel != "404.html":  # 404 sayfası dizine girmemeli
                 s = re.sub(r'<meta name="robots" content="noindex[^"]*">\n?', "", s)
             s = re.sub(r' data-preview="[^"]*"', "", s)
-            z.writestr(rel, s)
+            z.writestr(info(rel), s)
         elif rel == "robots.txt":
-            z.writestr(rel, "User-agent: *\nAllow: /\n\nSitemap: https://eseaagency.com/sitemap.xml\n")
+            z.writestr(info(rel), "User-agent: *\nAllow: /\n\nSitemap: https://eseaagency.com/sitemap.xml\n")
         else:
             z.write(f, rel)
     for name in ("iletisim.php", ".htaccess"):
