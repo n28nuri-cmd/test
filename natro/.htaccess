@@ -7,21 +7,18 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # www → www'siz (site kayıtlarındaki adres: eseaagency.com)
-  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^ %{REQUEST_SCHEME}://%1%{REQUEST_URI} [L,R=301]
-
-  # SSL sertifikası kurulduktan SONRA aşağıdaki iki satırın başındaki # işaretini kaldırın (http → https):
-  # RewriteCond %{HTTPS} off
-  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # http → https ve www → www'siz, tek adımda (site kayıtlarındaki adres: https://eseaagency.com/)
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://eseaagency.com%{REQUEST_URI} [L,R=301]
 
   # nokta ile başlayan gizli dosyalara (.htaccess, .git vb.) erişimi kapat
   RewriteRule (^|/)\.(?!well-known/) - [F]
 </IfModule>
 
 <IfModule mod_headers.c>
-  # SSL kurulduktan sonra açın:
-  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # Tarayıcıya siteyi hep https ile açmasını söyler (alt alan adları hariç: webmail/cpanel'de sertifika yok)
+  Header always set Strict-Transport-Security "max-age=31536000"
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
