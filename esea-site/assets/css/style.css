@@ -309,6 +309,12 @@ button { font: inherit; }
 .auth p { margin: 0; font-size: .92rem; color: var(--text); }
 .auth p a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
 .auth-code { color: var(--muted); font-size: .85rem; }
+.refs-sec { background: var(--paper); }
+.ref-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; list-style: none; margin: 0; padding: 0; }
+.ref { display: grid; place-items: center; height: 150px; padding: 24px 28px; background: var(--white); box-shadow: 0 10px 30px rgb(6 24 43 / 6%); transition: transform .35s var(--ease), box-shadow .35s; }
+.ref:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.ref picture, .ref img { display: block; max-width: 100%; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+@media (max-width: 900px) { .ref-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } .ref { height: 120px; padding: 18px; } .ref img { max-height: 56px; } }
 @media (max-width: 1100px) { .auth-grid { grid-template-columns: 1fr 1fr; } .auth-item:first-child { grid-column: 1 / -1; } }
 @media (max-width: 700px) { .auth-grid { grid-template-columns: 1fr; } }
 
@@ -422,6 +428,14 @@ button { font: inherit; }
 .mobile-bar { display: none; }
 
 /* ---------- duyarlı ---------- */
+/* 7 menü bağlantısı: orta genişliklerde sıkılaştır, dar masaüstünde üst butonu gizle (hero ve iletişimde zaten var) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .main-nav ul { gap: clamp(12px, 1.3vw, 22px); }
+  .main-nav ul a { letter-spacing: .07em; }
+}
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .nav-extra .btn { display: none; }
+}
 @media (max-width: 1260px) {
   .main-nav ul { gap: 16px; }
   .main-nav ul a { font-size: .74rem; letter-spacing: .08em; }
