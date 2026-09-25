@@ -17,10 +17,18 @@ EXTRA = Path(__file__).resolve().parent
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else EXTRA / "esea-natro.zip"
 SKIP = {"netlify.toml"}
 
+# Hiçbir sayfada, CSS/JS'de veya veri dosyasında adı geçmeyen görseller pakete alınmaz.
+refs = "".join(
+    f.read_text(encoding="utf-8")
+    for pat in ("*.html", "en/*.html", "assets/css/*.css", "assets/js/*.js", "assets/data/*.json")
+    for f in SRC.glob(pat)
+)
+UNUSED = {f.relative_to(SRC).as_posix() for f in (SRC / "assets/img").rglob("*") if f.is_file() and f.name not in refs}
+
 with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
     for f in sorted(SRC.rglob("*")):
         rel = f.relative_to(SRC).as_posix()
-        if f.is_dir() or rel in SKIP:
+        if f.is_dir() or rel in SKIP or rel in UNUSED:
             continue
         if f.suffix == ".html":
             s = f.read_text(encoding="utf-8")
@@ -35,4 +43,4 @@ with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
     for name in ("iletisim.php", ".htaccess"):
         z.write(EXTRA / name, name)
 
-print(OUT, f"{OUT.stat().st_size / 1e6:.1f} MB")
+print(OUT, f"{OUT.stat().st_size / 1e6:.1f} MB", f"({len(UNUSED)} kullanılmayan görsel hariç)")
