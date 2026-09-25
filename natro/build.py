@@ -27,7 +27,7 @@ refs = "".join(
 UNUSED = {f.relative_to(SRC).as_posix() for f in (SRC / "assets/img").rglob("*") if f.is_file() and f.name not in refs}
 
 def info(name: str) -> zipfile.ZipInfo:
-    """Metinden yazılan dosyalar da web sunucusunun okuyabileceği 0644 izniyle çıkarılsın."""
+    """Tüm dosyalar web sunucusunun okuyabileceği 0644 izniyle çıkarılsın."""
     zi = zipfile.ZipInfo(name, date_time=time.localtime()[:6])
     zi.external_attr = 0o100644 << 16
     zi.compress_type = zipfile.ZIP_DEFLATED
@@ -48,8 +48,8 @@ with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
         elif rel == "robots.txt":
             z.writestr(info(rel), "User-agent: *\nAllow: /\n\nSitemap: https://eseaagency.com/sitemap.xml\n")
         else:
-            z.write(f, rel)
+            z.writestr(info(rel), f.read_bytes())  # izin her zaman 0644 (kaynak dosyanın izni ne olursa olsun)
     for name in ("iletisim.php", ".htaccess"):
-        z.write(EXTRA / name, name)
+        z.writestr(info(name), (EXTRA / name).read_bytes())
 
 print(OUT, f"{OUT.stat().st_size / 1e6:.1f} MB", f"({len(UNUSED)} kullanılmayan görsel hariç)")
