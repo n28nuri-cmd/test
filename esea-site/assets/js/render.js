@@ -16,8 +16,8 @@ export const ICON = {
 };
 
 const T = {
-  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç", office: "Telefon" },
-  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps", office: "Phone" },
+  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç", office: "Telefon", liPage: "Şirket sayfamız →" },
+  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps", office: "Phone", liPage: "Our company page →" },
 };
 
 const initials = (name) => name.split(/\s+/).filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toLocaleUpperCase("tr");
@@ -82,6 +82,7 @@ export function renderContact(data, lang) {
     hq.telefon && hq.telefon !== f.operasyon_telefon_7_24 && `<li>${ICON.phone}<div><small>${t.office}</small><a href="tel:${tel(hq.telefon)}">${esc(hq.telefon)}</a></div></li>`,
     f.eposta && `<li>${ICON.mail}<div><small>${t.email}</small><a href="mailto:${esc(f.eposta)}">${esc(f.eposta)}</a></div></li>`,
     f.operasyon_eposta && `<li>${ICON.mail}<div><small>${t.opsMail}</small><a href="mailto:${esc(f.operasyon_eposta)}">${esc(f.operasyon_eposta)}</a></div></li>`,
+    f.linkedin && `<li>${ICON.linkedin}<div><small lang="en">LinkedIn</small><a href="${url(f.linkedin)}" target="_blank" rel="noopener">${t.liPage}</a></div></li>`,
     f.operasyon_telefon_7_24 && `<li class="ci-ops">${ICON.clock}<div><small>${t.ops}</small><a href="tel:${tel(f.operasyon_telefon_7_24)}">${esc(f.operasyon_telefon_7_24)}</a></div></li>`,
   ].filter(Boolean).join("\n");
 }
