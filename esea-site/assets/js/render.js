@@ -3,6 +3,8 @@
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const tel = (s) => String(s).replace(/[^\d+]/g, "");
+// Veri dosyasından gelen dış bağlantılar yalnızca https olabilir (javascript: vb. engellenir).
+const url = (s) => (/^https:\/\//i.test(String(s ?? "").trim()) ? esc(String(s).trim()) : "#");
 
 export const ICON = {
   phone: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z"/></svg>',
@@ -38,7 +40,7 @@ export function renderPeople(data, lang, base = "", headingTag = "h3", limit = 0
     const icons = [
       m.eposta && `<a href="mailto:${esc(m.eposta)}" aria-label="${t.mail}: ${esc(m.ad)}" title="${esc(m.eposta)}">${ICON.mail}</a>`,
       m.telefon && `<a href="tel:${tel(m.telefon)}" aria-label="${t.call}: ${esc(m.ad)}" title="${esc(m.telefon)}">${ICON.phone}</a>`,
-      m.linkedin && `<a href="${esc(m.linkedin)}" target="_blank" rel="noopener" aria-label="${t.li}: ${esc(m.ad)}">${ICON.linkedin}</a>`,
+      m.linkedin && `<a href="${url(m.linkedin)}" target="_blank" rel="noopener" aria-label="${t.li}: ${esc(m.ad)}">${ICON.linkedin}</a>`,
     ].filter(Boolean).join("");
     const bio = m[`tanitim_${lang}`] || m.tanitim_tr || "";
     const long = m[`detay_${lang}`] || m.detay_tr || bio;
@@ -61,7 +63,7 @@ export function renderPeople(data, lang, base = "", headingTag = "h3", limit = 0
       <ul class="pd-contact">
         ${m.eposta ? `<li>${ICON.mail}<a href="mailto:${esc(m.eposta)}">${esc(m.eposta)}</a></li>` : ""}
         ${m.telefon ? `<li>${ICON.phone}<a href="tel:${tel(m.telefon)}">${esc(m.telefon)}</a></li>` : ""}
-        ${m.linkedin ? `<li>${ICON.linkedin}<a href="${esc(m.linkedin)}" target="_blank" rel="noopener">LinkedIn</a></li>` : ""}
+        ${m.linkedin ? `<li>${ICON.linkedin}<a href="${url(m.linkedin)}" target="_blank" rel="noopener">LinkedIn</a></li>` : ""}
       </ul>
     </div>
   </template>
@@ -76,7 +78,7 @@ export function renderContact(data, lang) {
   const hq = (data.ofisler || []).find((o) => o.goster !== false) || {};
   const addr = hq[`adres_${lang}`] || hq.adres_tr;
   return [
-    addr && `<li>${ICON.pin}<div><small>${t.address}</small><span>${esc(addr)}</span>${hq.harita ? `<a href="${esc(hq.harita)}" target="_blank" rel="noopener">${t.map} →</a>` : ""}</div></li>`,
+    addr && `<li>${ICON.pin}<div><small>${t.address}</small><span>${esc(addr)}</span>${hq.harita ? `<a href="${url(hq.harita)}" target="_blank" rel="noopener">${t.map} →</a>` : ""}</div></li>`,
     hq.telefon && hq.telefon !== f.operasyon_telefon_7_24 && `<li>${ICON.phone}<div><small>${t.office}</small><a href="tel:${tel(hq.telefon)}">${esc(hq.telefon)}</a></div></li>`,
     f.eposta && `<li>${ICON.mail}<div><small>${t.email}</small><a href="mailto:${esc(f.eposta)}">${esc(f.eposta)}</a></div></li>`,
     f.operasyon_eposta && `<li>${ICON.mail}<div><small>${t.opsMail}</small><a href="mailto:${esc(f.operasyon_eposta)}">${esc(f.operasyon_eposta)}</a></div></li>`,

@@ -23,6 +23,12 @@ ErrorDocument 404 /404.html
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # Yalnızca sitenin kendi dosyaları çalışır/yüklenir (dış betik, iframe, eklenti engellenir)
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  # Sunucu yazılım sürümünü dışarıya gösterme
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
 
   # HTML ve veri dosyası her zaman güncel; sürümlü CSS/JS, font ve görseller uzun süre önbellekte
   <FilesMatch "\.(html|json)$">

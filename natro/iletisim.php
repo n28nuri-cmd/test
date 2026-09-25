@@ -5,6 +5,7 @@
 declare(strict_types=1);
 
 date_default_timezone_set('Europe/Istanbul');
+header_remove('X-Powered-By');
 
 const ALICI = 'agency@eseaagency.com';
 const GONDEREN = 'agency@eseaagency.com'; // SMTP ile oturum açılan hesap
