@@ -5,7 +5,7 @@
 declare(strict_types=1);
 
 const ALICI = 'agency@eseaagency.com';
-const GONDEREN = 'noreply@eseaagency.com'; // Natro'da alan adına ait bir adres olmalı (SPF uyumu)
+const GONDEREN = 'agency@eseaagency.com'; // alan adına ait gerçek bir hesap olmalı (SPF uyumu)
 
 $json = strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
 $lang = ($_POST['lang'] ?? 'tr') === 'en' ? 'en' : 'tr';
