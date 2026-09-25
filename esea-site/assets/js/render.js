@@ -14,8 +14,8 @@ export const ICON = {
 };
 
 const T = {
-  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç", office: "Sabit Hat" },
-  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps", office: "Office Phone" },
+  tr: { details: "Detaylar", call: "Ara", mail: "E-posta", li: "LinkedIn", soon: "Fotoğraf yakında", ops: "7/24 Operasyon Hattı", email: "E-posta", opsMail: "Operasyon", address: "Merkez Ofis", map: "Haritada aç", office: "Telefon" },
+  en: { details: "View details", call: "Call", mail: "Email", li: "LinkedIn", soon: "Photo coming soon", ops: "24/7 Operations Line", email: "Email", opsMail: "Operations", address: "Head Office", map: "Open in maps", office: "Phone" },
 };
 
 const initials = (name) => name.split(/\s+/).filter(Boolean).map((p) => p[0]).slice(0, 2).join("").toLocaleUpperCase("tr");

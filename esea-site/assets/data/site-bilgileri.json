@@ -2,9 +2,9 @@
   "_aciklama": "cPanel > Dosya Yöneticisi'nden düzenleyebilirsiniz. Boş (\"\") alanlar sitede otomatik gizlenir. 'foto' alanına assets/img/ekip/ klasöründeki dosya adını yazın. 'tanitim_tr' / 'tanitim_en' ekip sayfasındaki kısa tanıtım cümlesidir. 'yer_tutucu': true olan kadrolar sitede GÖSTERİLMEZ; gerçek bilgileri girip bu alanı silince görünür. Ofislerde 'goster': false olanlar sitede gösterilmez.",
   "firma": {
     "unvan": "ESEA Agency",
-    "operasyon_telefon_7_24": "+90 530 774 49 27",
+    "operasyon_telefon_7_24": "",
     "eposta": "agency@eseaagency.com",
-    "operasyon_eposta": "ops@eseaagency.com",
+    "operasyon_eposta": "",
     "linkedin": ""
   },
   "ofisler": [
@@ -26,7 +26,7 @@
       "adres_tr": "Filyos Limanı, Çaycuma / Zonguldak",
       "adres_en": "Filyos Port, Çaycuma, Zonguldak, Türkiye",
       "telefon": "",
-      "eposta": "ops@eseaagency.com",
+      "eposta": "agency@eseaagency.com",
       "harita": ""
     }
   ],
